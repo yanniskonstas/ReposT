@@ -8,7 +8,12 @@ namespace ReposT
     [TestFixture]
     public class Tests
     {
-        IRepository<Storable> _repository = new Repository<Storable>();
+        static IRepository<Storable> _repository = new Repository<Storable>();
+        Func<IComparable, IStoreable> CreateTestItem = id => {
+            var item = new Storable { Id = id };
+            _repository.Save(item);
+            return item;
+        };
 
         [Test]
         public void TestStore() {            
@@ -34,14 +39,5 @@ namespace ReposT
             var itemCreated = _repository.FindById(id);
             Assert.AreEqual(item, itemCreated);            
         }
-
-        IStoreable CreateTestItem(IComparable id) {
-            var item = new Storable { Id = id };
-            _repository.Save(item);
-            return item;
-        }
-
-
-
     }
 }
